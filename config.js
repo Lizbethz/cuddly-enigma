@@ -8,7 +8,7 @@ import path from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-global.botnumber = "51936762092"
+global.botnumber = "5219531316285"
 global.confirmCode = ""
 global.authFile = `MysticSession`;
 
@@ -20,7 +20,7 @@ global.isBaileysFail = false
 global.defaultLenguaje = 'es';
 
 global.owner = [
-  ['51936762092', '👑 Mystic - Creador 👑', true]
+  ['5219531316285', '👑 Mystic - Creador 👑', true]
 ];
 
 global.suittag = ['5219993404349'];
