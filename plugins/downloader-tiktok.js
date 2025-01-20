@@ -1,78 +1,183 @@
-import axios from 'axios';
-import cheerio from 'cheerio';
-import {generateWAMessageFromContent} from "baileys";
-import {tiktokdl} from '@bochilteam/scraper';
+import axios from "axios";
+import cheerio from "cheerio";
 
-let tiktok;
-import('@xct007/frieren-scraper')
-  .then((module) => {
-    tiktok = module.tiktok;
-  })
-  .catch((error) => {
-    console.error('No se pudo importar "@xct007/frieren-scraper".');
-  });
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+  if (!text) {
+    return conn.reply(m.chat, `Usa el formato: ${usedPrefix + command} <enlace de TikTok>`, m);
+  }
 
-const handler = async (m, {conn, text, args, usedPrefix, command}) => {
-  const datas = global
-  const idioma = datas.db.data.users[m.sender].language || global.defaultLenguaje
-  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`))
-  const tradutor = _translate.plugins.descargas_tiktok
-
-
-  if (!text) throw `${tradutor.texto1} _${usedPrefix + command} https://vm.tiktok.com/ZM686Q4ER/_`;
-  if (!/(?:https:?\/{2})?(?:w{3}|vm|vt|t)?\.?tiktok.com\/([^\s&]+)/gi.test(text)) throw `${tradutor.texto2} _${usedPrefix + command} https://vm.tiktok.com/ZM686Q4ER/_`;
-  const texto = `${tradutor.texto3}`;
-  // let buttons = [{ buttonText: { displayText: '♫ 𝙰𝚄𝙳𝙸𝙾 ♫' }, buttonId: `${usedPrefix}tomp3` }]
   try {
-    const aa = {quoted: m, userJid: conn.user.jid};
-    const prep = generateWAMessageFromContent(m.chat, {extendedTextMessage: {text: texto, contextInfo: {externalAdReply: {title: 'ᴛʜᴇ ᴍʏsᴛɪᴄ - ʙᴏᴛ', body: null, thumbnail: imagen1, sourceUrl: 'https://github.com/BrunoSobrino/TheMystic-Bot-MD'}, mentionedJid: [m.sender]}}}, aa);
-    await conn.relayMessage(m.chat, prep.message, {messageId: prep.key.id, mentions: [m.sender]});
-    const dataFn = await conn.getFile(`${global.MyApiRestBaseUrl}/api/tiktokv2?url=${args[0]}&apikey=${global.MyApiRestApikey}`);
-    const desc1n = `${tradutor.texto4[0]} _${usedPrefix}tomp3_ ${tradutor.texto4[1]}`;
-    await conn.sendMessage(m.chat, {video: dataFn.data, caption: desc1n}, {quoted: m});
-  } catch (ee1) {
-  try {
-    //const aa = {quoted: m, userJid: conn.user.jid};
-    //const prep = generateWAMessageFromContent(m.chat, {extendedTextMessage: {text: texto, contextInfo: {externalAdReply: {title: 'ᴛʜᴇ ᴍʏsᴛɪᴄ - ʙᴏᴛ', body: null, thumbnail: imagen1, sourceUrl: 'https://github.com/BrunoSobrino/TheMystic-Bot-MD'}, mentionedJid: [m.sender]}}}, aa);
-    //await conn.relayMessage(m.chat, prep.message, {messageId: prep.key.id, mentions: [m.sender]});
-    const dataF = await tiktok.v1(args[0]);
-    // let desc1 =  `*𝙽𝙸𝙲𝙺𝙽𝙰𝙼𝙴:* ${dataF.nickname || 'Indefinido'}`
-    const desc1 = `${tradutor.texto5[0]} _${usedPrefix}tomp3_ ${tradutor.texto5[1]}`;
-    await conn.sendMessage(m.chat, {video: {url: dataF.play}, caption: desc1}, {quoted: m});
-  } catch (e1) {
-    try {
-      const tTiktok = await tiktokdlF(args[0]);
-      // let desc2 = `🔗 *Url:* ${tTiktok.video}`
-      const desc2 = `${tradutor.texto6[0]} _${usedPrefix}tomp3_ ${tradutor.texto6[1]}`;
-      await conn.sendMessage(m.chat, {video: {url: tTiktok.video}, caption: desc2}, {quoted: m});
-    } catch (e2) {
-        try {
-          const {author: {nickname}, video, description} = await tiktokdl(args[0]);
-          const url = video.no_watermark2 || video.no_watermark || 'https://tikcdn.net' + video.no_watermark_raw || video.no_watermark_hd;
-          // let cap = `*𝙽𝙸𝙲𝙺𝙽𝙰𝙼𝙴:* ${nickname || 'Indefinido'}`
-          const cap = `${tradutor.texto8[0]} _${usedPrefix}tomp3_ ${tradutor.texto8[1]}`;
-          await conn.sendMessage(m.chat, {video: {url: url}, caption: cap}, {quoted: m});
-        } catch {
-          throw `${tradutor.texto9}`;
-        }
+    await m.react('🕒');
+
+    const videoResult = await ttsave.video(text);
+    const { 
+      type, 
+      nickname, 
+      username, 
+      description, 
+      videoInfo, 
+      slides, 
+      audioUrl 
+    } = videoResult;
+
+    let message = `
+📛 *Nombre*: ${nickname || "-"}
+🆔 *Usuario*: ${username || "-"}
+📝 *Descripción*: ${description || "-"}
+`.trim();
+
+    if (type === "slide") {
+      message += "\n📷 *Tipo*: Presentación (Imágenes)";
+      await conn.reply(m.chat, message, m);
+
+      for (let slide of slides) {
+        await m.react('✅');
+        await conn.sendFile(m.chat, slide.url, `presentación-${slide.number}.jpg`, "", m);
+      }
+    } 
+    else if (type === "video") {
+      message += "\n🎥 *Tipo*: Video";
+
+      if (videoInfo.nowm) {
+        await m.react('✅');
+await conn.sendMessage(m.chat, {
+  video: { url: videoInfo.nowm },
+  caption: message,
+  footer: dev,
+  buttons: [
+    {
+      buttonId: `.tiktokmp3 ${text}`,
+      buttonText: {
+        displayText: 'Audio 🎧',
+      },
+    },
+    {
+      buttonId: `.tiktokhd ${text}`,
+      buttonText: {
+        displayText: 'Calidad HD',
+      },
+    },
+  ],
+  viewOnce: true,
+  headerType: 4,
+}, { quoted: m });
+      } else {
+        conn.reply(m.chat, "No se pudo obtener el video sin marca de agua.", m);
       }
     }
+
+    if (audioUrl) {
+    }
+  } catch (error) {
+    console.error(error);
+    conn.reply(m.chat, `Ocurrió un error al procesar la solicitud. Asegúrate de que el enlace de TikTok sea válido e inténtalo nuevamente.`, m);
   }
 };
-handler.command = /^(tiktok|ttdl|tiktokdl|tiktoknowm|tt|ttnowm|tiktokaudio)$/i;
+
+handler.help = ["tiktok *<url>*"];
+handler.tags = ["dl"];
+handler.command = ["tiktok"];
 export default handler;
 
-async function tiktokdlF(url) {
-  if (!/tiktok/.test(url)) return `${tradutor.texto10} _${usedPrefix + command} https://vm.tiktok.com/ZM686Q4ER/_`;
-  const gettoken = await axios.get('https://tikdown.org/id');
-  const $ = cheerio.load(gettoken.data);
-  const token = $('#download-form > input[type=hidden]:nth-child(2)').attr( 'value' );
-  const param = {url: url, _token: token};
-  const {data} = await axios.request('https://tikdown.org/getAjax?', {method: 'post', data: new URLSearchParams(Object.entries(param)), headers: {'content-type': 'application/x-www-form-urlencoded; charset=UTF-8', 'user-agent': 'Mozilla/5.0 (Windows NT 6.3; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36'}});
-  const getdata = cheerio.load(data.html);
-  if (data.status) {
-    return {status: true, thumbnail: getdata('img').attr('src'), video: getdata('div.download-links > div:nth-child(1) > a').attr('href'), audio: getdata('div.download-links > div:nth-child(2) > a').attr('href')};
-  } else {
-    return {status: false};
-  }
-}
+const headers = {
+  authority: "ttsave.app",
+  accept: "application/json, text/plain, */*",
+  origin: "https://ttsave.app",
+  referer: "https://ttsave.app/en",
+  "user-agent": "Postify/1.0.0",
+};
+
+const ttsave = {
+  submit: async function (url, referer) {
+    const headerx = { ...headers, referer };
+    const data = { query: url, language_id: "1" };
+    return axios.post("https://ttsave.app/download", data, { headers: headerx });
+  },
+
+  parse: function ($) {
+    const uniqueId = $("#unique-id").val();
+    const nickname = $("h2.font-extrabold").text();
+    const profilePic = $("img.rounded-full").attr("src");
+    const username = $("a.font-extrabold.text-blue-400").text();
+    const description = $("p.text-gray-600").text();
+
+    const dlink = {
+      nowm: $("a.w-full.text-white.font-bold").first().attr("href"),
+      wm: $("a.w-full.text-white.font-bold").eq(1).attr("href"),
+      audio: $("a[type='audio']").attr("href"),
+      profilePic: $("a[type='profile']").attr("href"),
+      cover: $("a[type='cover']").attr("href"),
+    };
+
+    const stats = {
+      reproducciones: "",
+      meGusta: "",
+      comentarios: "",
+      compartidos: "",
+    };
+
+    $(".flex.flex-row.items-center.justify-center").each((index, element) => {
+      const $element = $(element);
+      const svgPath = $element.find("svg path").attr("d");
+      const value = $element.find("span.text-gray-500").text().trim();
+
+      if (svgPath && svgPath.startsWith("M10 18a8 8 0 100-16")) {
+        stats.reproducciones = value;
+      } else if (svgPath && svgPath.startsWith("M3.172 5.172a4 4 0 015.656")) {
+        stats.meGusta = value || "0";
+      } else if (svgPath && svgPath.startsWith("M18 10c0 3.866-3.582")) {
+        stats.comentarios = value;
+      } else if (svgPath && svgPath.startsWith("M17.593 3.322c1.1.128")) {
+        stats.compartidos = value;
+      }
+    });
+
+    const tituloCancion = $(".flex.flex-row.items-center.justify-center.gap-1.mt-5")
+      .find("span.text-gray-500")
+      .text()
+      .trim();
+
+    const slides = $("a[type='slide']")
+      .map((i, el) => ({
+        number: i + 1,
+        url: $(el).attr("href"),
+      }))
+      .get();
+
+    return {
+      uniqueId,
+      nickname,
+      profilePic,
+      username,
+      description,
+      dlink,
+      stats,
+      tituloCancion,
+      slides,
+    };
+  },
+
+  video: async function (link) {
+    try {
+      const response = await this.submit(link, "https://ttsave.app/en");
+      const $ = cheerio.load(response.data);
+      const result = this.parse($);
+
+      if (result.slides && result.slides.length > 0) {
+        return { type: "slide", ...result };
+      }
+
+      return {
+        type: "video",
+        ...result,
+        videoInfo: {
+          nowm: result.dlink.nowm,
+          wm: result.dlink.wm,
+        },
+      };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  },
+};
