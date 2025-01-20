@@ -1,5 +1,6 @@
 import { igdl } from "ruhend-scraper";
 import fs from 'fs';
+import axios from 'axios';
 
 const handler = async (m, { args, conn }) => {
   if (!args[0]) {
@@ -15,6 +16,8 @@ const handler = async (m, { args, conn }) => {
         fs.mkdirSync(tmpDir);
       }
       const filePath = `${tmpDir}/${media.url.split('/').pop()}`;
+      const response = await axios.get(media.url, { responseType: 'arraybuffer' });
+      fs.writeFileSync(filePath, Buffer.from(response.data));
       await new Promise(resolve => setTimeout(resolve, 2000));
       await conn.sendFile(m.chat, filePath, 'instagram.mp4', '🎞️ *Tu video de instagram*', m);
     }
