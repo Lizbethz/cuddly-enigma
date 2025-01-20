@@ -14,6 +14,24 @@ const tradutor = _translate.plugins.descargas_play;
   } else if (['play2', 'play2doc'].includes(command)) {
     additionalText = 'vídeo';
  }
+const maxRetries = 3;
+const retryDelay = 500; // 500ms
+
+async function makeRequest(url) {
+  let retries = 0;
+  while (retries < maxRetries) {
+    try {
+      const res = await axios.get(url);
+      return res.data;
+    } catch (e) {
+      retries++;
+      if (retries >= maxRetries) {
+        throw e;
+      }
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
+    }
+  }
+}
 
     if (command === 'play') {
       if (!text) throw `${tradutor.texto1[0]} _${usedPrefix + command} ${tradutor.texto1[1]}`;
