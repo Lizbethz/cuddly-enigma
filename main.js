@@ -232,7 +232,17 @@ if (opts['server']) (await import('./server.js')).default(global.conn, PORT);
 function clearTmp() {
   const tmp = [join(__dirname, './src/tmp')];
   const filename = [];
-  tmp.forEach((dirname) => readdirSync(dirname).forEach((file) => filename.push(join(dirname, file))));
+  try {
+  fs.readdirSync('/home/container/src/tmp').forEach((file) => {
+    // código existente aquí
+  });
+} catch (err) {
+  if (err.code === 'ENOENT') {
+    console.log('El directorio no existe');
+  } else {
+    console.log('Error inesperado:', err);
+  }
+  }
   return filename.map((file) => {
     const stats = statSync(file);
     if (stats.isFile() && (Date.now() - stats.mtimeMs >= 1000 * 60 * 3)) return unlinkSync(file); // 3 minutes
