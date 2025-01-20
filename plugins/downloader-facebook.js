@@ -1,48 +1,48 @@
-import fetch from 'node-fetch';
-import axios from 'axios';
-import fs from 'fs';
-let enviando = false;
+ import { igdl } from 'ruhend-scraper';
 
-const handler = async (m, {conn, args, command, usedPrefix}) => {
-  const idioma = global.db.data.users[m.sender].language || global.defaultLenguaje;
-  const _translate = JSON.parse(fs.readFileSync(`./src/languages/${idioma}.json`));
-  const tradutor = _translate.plugins.descargas_facebook;
-
+const handler = async (m, { text, conn, args, usedPrefix, command }) => {
   if (!args[0]) {
-    throw `_*${tradutor.texto1[0]}*_\n\n*${tradutor.texto1[1]}*\n\n*${tradutor.texto1[2]}* _${usedPrefix + command} https://fb.watch/fOTpgn6UFQ/_`;
-  }
+    return conn.reply(m.chat, '*\`Ingresa El link Del vídeo a descargar 💛\`*', m, fake);
+  } 
 
-  if (!enviando) enviando = true;
+  await conn.sendMessage(m.chat, { text: 'Cargando...' }, { quoted: m });
+  let res;
   try {
-    
-    const response = await fetch(`${global.MyApiRestBaseUrl}/api/facebook?url=${args[0]}&apikey=${global.MyApiRestApikey}`);
-    const data = await response.json();
-
-    if (data?.status === true) {
-      const videoBuffer = await getBuffer(data.resultado.data);
-      await conn.sendMessage(m.chat, { video: videoBuffer, filename: 'video.mp4', caption: `_*${tradutor.texto4}*_` }, {quoted: m});
-      enviando = false;
-    } else {
-      console.error('Failed to fetch video data from API:', data);
-      enviando = false;
-    }
+    res = await igdl(args[0]);
   } catch (error) {
-    console.error('Error occurred:', error);
-    enviando = false;
-    throw `_*${tradutor.texto5}*`;
+    return conn.reply(m.chat, '*`Error al obtener datos. Verifica el enlace.`*', m);
+  }
+
+  let result = res.data;
+  if (!result || result.length === 0) {
+    return conn.reply(m.chat, '*`No se encontraron resultados.`*', m);
+  }
+
+  let data;
+  try {
+    data = result.find(i => i.resolution === "720p (HD)") || result.find(i => i.resolution === "360p (SD)");
+  } catch (error) {
+    return conn.reply(m.chat, '*`Error al procesar los datos.`*', m);
+  }
+
+  if (!data) {
+    return conn.reply(m.chat, '*`No se encontró una resolución adecuada.`*', m);
+  }
+
+  await conn.sendMessage(m.chat, { text: 'Descarga completa.' }, { quoted: m });
+  let video = data.url;
+
+  try {
+    await conn.sendMessage(m.chat, { video: { url: video }, caption: 'Vídeo descargado con éxito.', fileName: 'fb.mp4', mimetype: 'video/mp4' }, { quoted: m });
+  } catch (error) {
+    return conn.reply(m.chat, '*`Error al enviar el video.`*', m);
+  await conn.sendMessage(m.chat, { text: '❌' }, { quoted: m });
   }
 };
 
-handler.command = /^(facebook|fb|facebookdl|fbdl|facebook2|fb2|facebookdl2|fbdl2|facebook3|fb3|facebookdl3|fbdl3|facebook4|fb4|facebookdl4|fbdl4|facebook5|fb5|facebookdl5|fbdl5)$/i;
-export default handler;
+handler.help = ['fb *<link>*'];
+handler.corazones = 2
+handler.tags = ['dl']
+handler.command = /^(fb|facebook|fbdl)$/i;
 
-const getBuffer = async (url, options = {}) => {
-  const res = await axios({
-    method: 'get', 
-    url, 
-    headers: {'DNT': 1, 'Upgrade-Insecure-Request': 1},
-    ...options, 
-    responseType: 'arraybuffer'
-  });
-  return res.data;
-};
+export default handler;                                                                                                                                                                                                                                          
