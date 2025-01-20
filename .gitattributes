@@ -1,0 +1,2 @@
+*.exe filter=lfs diff=lfs merge=lfs -text
+src/glx/itens/casa/KeeWeb-1.18.7.win.x64.exe filter=lfs diff=lfs merge=lfs -text
