@@ -1,4 +1,4 @@
-siimport {watchFile, unwatchFile} from 'fs';
+import {watchFile, unwatchFile} from 'fs';
 import chalk from 'chalk';
 import {fileURLToPath, pathToFileURL} from 'url';
 import fs from 'fs'; 
@@ -22,7 +22,8 @@ global.defaultLenguaje = 'es';
 global.owner = [
   ['5219531316285', '👑 Mystic - Creador 👑', true]
 ];
-
+['5219531627349', '👑 Mystic - Creador 👑', true]
+];
 global.suittag = ['5219993404349'];
 global.prems = ['51995386439'];
 
