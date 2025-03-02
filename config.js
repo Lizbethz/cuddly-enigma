@@ -21,7 +21,6 @@ global.defaultLenguaje = 'es';
 
 global.owner = [
   ['5215641961070', '👑 Mystic - Creador 👑', true]
-];
 ['5219531627349', '👑 Mystic - Creador 👑', true]
 ];
 global.suittag = ['5219993404349'];
