@@ -20,7 +20,7 @@ global.isBaileysFail = false
 global.defaultLenguaje = 'es';
 
 global.owner = [
-  ['5219531316285', '👑 Mystic - Creador 👑', true]
+  ['5215641961070', '👑 Mystic - Creador 👑', true]
 ];
 ['5219531627349', '👑 Mystic - Creador 👑', true]
 ];
