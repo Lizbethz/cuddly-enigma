@@ -8,7 +8,7 @@ import path from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-global.botnumber = "5219531316285"
+global.botnumber = ""
 global.confirmCode = ""
 global.authFile = `MysticSession`;
 
@@ -31,11 +31,11 @@ global.prems = ['51995386439'];
 global.BASE_API_DELIRIUS = "https://deliriussapi-oficial.vercel.app";
 
 global.packname = 'Sticker';
-global.author = 'ThePisaNucaXpress - Bot';
-global.wm = 'ThePisaNucaXpress - Bot';
-global.titulowm = 'ThePisaNucaXpress - Bot';
-global.titulowm2 = `ThePisaNucaXpress - Bot`
-global.igfg = 'ThePisaNucaXpress - Bot';
+global.author = '★𝚃𝚑𝚎 𝙼𝚢𝚜𝚝𝚒𝚌 - 𝙱𝚘𝚝★';
+global.wm = '★𝚃𝚑𝚎 𝙼𝚢𝚜𝚝𝚒𝚌 - 𝙱𝚘𝚝★';
+global.titulowm = '★𝚃𝚑𝚎 𝙼𝚢𝚜𝚝𝚒𝚌 - 𝙱𝚘𝚝★';
+global.titulowm2 = '★𝚃𝚑𝚎 𝙼𝚢𝚜𝚝𝚒𝚌 - 𝙱𝚘𝚝★';
+global.igfg = '★𝚃𝚑𝚎 𝙼𝚢𝚜𝚝𝚒𝚌 - 𝙱𝚘𝚝★';
 global.wait = '*_[ ⏳ ] Cargando..._*';
 
 // Using path.join for proper path resolution
@@ -56,9 +56,9 @@ global.mes = d.toLocaleDateString('es', {month: 'long'});
 global.año = d.toLocaleDateString('es', {year: 'numeric'});
 global.tiempo = d.toLocaleString('en-US', {hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true});
 //* ****************************
-global.wm2 = '${dia} ${fecha}\nTheAleXpress - Bot';
-global.gt = 'TheAleXpress - Bot';
-global.mysticbot = 'TheAleXpress - Bot';
+global.wm2 = '${dia} ${fecha}\nThe Mystic - Bot';
+global.gt = 'The Mystic - Bot';
+global.mysticbot = 'The Mystic - Bot';
 global.channel = 'https://whatsapp.com/channel/0029Vaein6eInlqIsCXpDs3y';
 global.md = 'https://github.com/BrunoSobrino/TheMystic-Bot-MD';
 global.waitt = '*_[ ⏳ ] Cargando..._*';
